@@ -1,5 +1,6 @@
 import sys
 import pygame
+from time import sleep
 from bullet import Bullet
 from alien import Alien
 
@@ -131,7 +132,24 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *= -1
 
 
+# 响应外星人撞到飞船
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    # 碰撞响应
+    stats.ships_left -= 1
+    aliens.empty()
+    bullets.empty()
+
+    # 重置游戏
+    create_fleet(ai_settings, screen, ship, aliens)
+    ship.center_ship()
+    sleep(0.5)
+
+
 # 更新外星人位置
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    # 检测外星人撞击飞船
+    if pygame.sprite.spritecollideany(ship, aliens):
+        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)

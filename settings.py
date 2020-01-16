@@ -1,6 +1,6 @@
 class Settings():
     def __init__(self):
-        # 界面髋
+        # 界面宽
         self.screen_width = 1200
 
         # 界面长
@@ -9,8 +9,9 @@ class Settings():
         # 底色
         self.bg_color = (230, 230, 230)
 
-        # 飞船移动速度
+        # 飞船
         self.ship_speed_factor = 20
+        self.ship_limit = 3
 
         # 子弹
         self.bullet_speed_factor = 15
