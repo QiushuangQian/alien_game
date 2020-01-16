@@ -135,14 +135,26 @@ def change_fleet_direction(ai_settings, aliens):
 # 响应外星人撞到飞船
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     # 碰撞响应
-    stats.ships_left -= 1
-    aliens.empty()
-    bullets.empty()
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
+        aliens.empty()
+        bullets.empty()
 
-    # 重置游戏
-    create_fleet(ai_settings, screen, ship, aliens)
-    ship.center_ship()
-    sleep(0.5)
+        # 重置游戏
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+        sleep(0.5)
+    else:
+        stats.game_active = False
+
+
+# 响应外星人到达屏幕底端
+def check_alliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break
 
 
 # 更新外星人位置
@@ -153,3 +165,5 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     # 检测外星人撞击飞船
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+    # 检测是否有外星人触底
+    check_alliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
