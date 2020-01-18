@@ -27,13 +27,13 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
 
 
 # 更新画面
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(ai_settings, screen, stats, scoreboard, ship, aliens, bullets, play_button):
     screen.fill(ai_settings.bg_color)
     ship.blitme()
     aliens.draw(screen)
     for bullet in bullets.sprites():
         bullet.draw_bullet()
-
+    scoreboard.show_score()
     if not stats.game_active:
         play_button.draw_button()
     pygame.display.flip()
@@ -70,8 +70,8 @@ def check_keyup_events(event, ship):
 # 检测鼠标指令
 def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
     if play_button.rect.collidepoint(mouse_x, mouse_y):
-        #单击play时开始新游戏
-        button_clicked = play_button.rect.collidepoint(mouse_x,mouse_y)
+        # 单击play时开始新游戏
+        button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
         if button_clicked and not stats.game_active:
             ai_settings.initialize_dynamic_settings()
             # 重置
@@ -86,7 +86,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bul
 
 
 # 子弹
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, scoreboard, ship, aliens, bullets):
     # 更新位置
     bullets.update()
     # 删除子弹
@@ -95,6 +95,9 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
             bullets.remove(bullet)
     # 检查子弹是否命中
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        stats.score += ai_settings.alien_points
+        scoreboard.prep_score()
     if len(aliens) == 0:
         bullets.empty()
         ai_settings.increase_speed()
