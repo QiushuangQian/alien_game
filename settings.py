@@ -31,8 +31,8 @@ class Settings():
     # 设置初始化
     def initialize_dynamic_settings(self):
         self.ship_speed_factor = 20
-        self.alien_speed_factor = 10
-        self.bullet_speed_factor = 15
+        self.alien_speed_factor = 15
+        self.bullet_speed_factor = 20
         self.fleet_direction = 1
         self.alien_points = 50
 

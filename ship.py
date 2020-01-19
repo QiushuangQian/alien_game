@@ -1,8 +1,10 @@
 import pygame
+from pygame.sprite import Sprite
 
 
-class Ship():
-    def __init__(self, screen, ai_settings):
+class Ship(Sprite):
+    def __init__(self, ai_settings, screen):
+        super(Ship, self).__init__()
         self.screen = screen
         self.ai_settings = ai_settings
 
@@ -18,8 +20,8 @@ class Ship():
         # 移动
         self.moving_right = False
         self.moving_left = False
-        self.moving_up = False
-        self.moving_down = False
+        # self.moving_up = False
+        # self.moving_down = False
 
     def update(self):
         # 移动（速度、范围）
@@ -27,17 +29,17 @@ class Ship():
             self.rect.centerx += self.ai_settings.ship_speed_factor
         elif self.moving_left and self.rect.left > self.screen_rect.left:
             self.rect.centerx -= self.ai_settings.ship_speed_factor
-        elif self.moving_up:
-            self.rect.bottom -= self.ai_settings.ship_speed_factor
-        elif self.moving_down:
-            self.rect.bottom += self.ai_settings.ship_speed_factor
+        # elif self.moving_up:
+        #     self.rect.bottom -= self.ai_settings.ship_speed_factor
+        # elif self.moving_down:
+        #     self.rect.bottom += self.ai_settings.ship_speed_factor
 
         # self.rect.centerx = self.center
 
     def blitme(self):  # 指定位置画飞船
         self.screen.blit(self.image, self.rect)
 
-    #重置飞船   //有问题
+    # 重置飞船   //有问题
     def center_ship(self):
         self.center = self.screen_rect.centerx
         self.bottom = self.screen_rect.bottom

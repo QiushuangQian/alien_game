@@ -21,7 +21,7 @@ def run_game():
     scoreboard = Scoreboard(ai_settings, screen, stats)
 
     # 创建飞船
-    ship = Ship(screen, ai_settings)
+    ship = Ship(ai_settings, screen)
     # 子弹编组
     bullets = Group()
     # 外星人编组
@@ -32,11 +32,11 @@ def run_game():
     play_button = Button(ai_settings, screen, "Play")
 
     while True:
-        gf.check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
+        gf.check_events(ai_settings, screen, stats, scoreboard, play_button, ship, aliens, bullets)
         if stats.game_active:
             ship.update()
-            gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
-            gf.update_bullets(ai_settings, screen,stats,scoreboard, ship, aliens, bullets)
+            gf.update_aliens(ai_settings, stats, screen, scoreboard, ship, aliens, bullets)
+            gf.update_bullets(ai_settings, screen, stats, scoreboard, ship, aliens, bullets)
         gf.update_screen(ai_settings, screen, stats, scoreboard, ship, aliens, bullets, play_button)
         # bullets.update()
         # for bullet in bullets.copy():
